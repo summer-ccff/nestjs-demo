@@ -8,8 +8,8 @@ import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest<Request>();
+  canActivate(ctx: ExecutionContext): boolean {
+    const request = ctx.switchToHttp().getRequest<Request>();
     const token = request.headers['token'];
     if (!token) {
       throw new UnauthorizedException('请先登录');

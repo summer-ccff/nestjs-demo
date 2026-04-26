@@ -9,7 +9,7 @@ import { map, timestamp } from 'rxjs/operators';
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(ctx: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => ({
         code: 0,
