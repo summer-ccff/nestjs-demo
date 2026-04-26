@@ -21,7 +21,8 @@ export class UsersController {
   getUsers(@Query() query: QueryUserDto) {
     const page = Number(query.page) || 1;
     const pageSize = Number(query.pageSize) || 2;
-    return this.usersService.findAll(page, pageSize);
+    const keyword = query.keyword || '';
+    return this.usersService.findAll(page, pageSize, keyword);
   }
 
   @Get(':id')

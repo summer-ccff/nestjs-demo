@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class QueryUserDto {
   @IsNotEmpty()
@@ -8,4 +8,8 @@ export class QueryUserDto {
   @IsNotEmpty()
   @IsString()
   pageSize: string;
+
+  @IsOptional()
+  @IsString()
+  keyword?: string;
 }
