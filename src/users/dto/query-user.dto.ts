@@ -1,15 +1,15 @@
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class QueryUserDto {
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   page: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   pageSize: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   keyword?: string;
 }
