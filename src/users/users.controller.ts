@@ -7,18 +7,21 @@ import {
   Put,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CreateUserWithPostDto } from './dto/create-user-with-post.dto';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   getUsers(@Query() query: QueryUserDto) {
     const page = Number(query.page) || 1;
     const pageSize = Number(query.pageSize) || 2;
