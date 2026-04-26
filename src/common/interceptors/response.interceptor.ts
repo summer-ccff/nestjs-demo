@@ -14,7 +14,6 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
       map((data) => ({
         code: 0,
         message: 'success',
-        timestamp: Date.now(),
         data,
       })),
     );
