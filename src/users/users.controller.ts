@@ -6,18 +6,22 @@ import {
   Post,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { QueryUserDto } from './dto/query-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUsers() {
-    return this.usersService.findAll();
+  getUsers(@Query() query: QueryUserDto) {
+    const page = Number(query.page) || 1;
+    const pageSize = Number(query.pageSize) || 2;
+    return this.usersService.findAll(page, pageSize);
   }
 
   @Get(':id')
@@ -40,4 +44,3 @@ export class UsersController {
     return this.usersService.remove(Number(id));
   }
 }
-``;

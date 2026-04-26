@@ -5,10 +5,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
+  findAll(page: number, pageSize: number) {
     return this.prisma.user.findMany({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       orderBy: {
-        id: 'desc',
+        updatedAt: 'desc',
       },
     });
   }
