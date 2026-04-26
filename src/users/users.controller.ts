@@ -15,6 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CreateUserWithPostDto } from './dto/create-user-with-post.dto';
 import { AuthGuard } from '../common/guards/auth.guard';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -29,6 +30,12 @@ export class UsersController {
     return this.usersService.findAll(page, pageSize, keyword);
   }
 
+  @Get('profile')
+  @UseGuards(AuthGuard)
+  getProfile(@CurrentUser() user: any) {
+    return user;
+  }
+
   @Get(':id')
   getUser(@Param('id') id: string) {
     return this.usersService.findOne(Number(id));
@@ -39,14 +46,14 @@ export class UsersController {
     return this.usersService.create(body.name);
   }
 
-  @Post(':id/post')
-  createPost(@Param('id') id: string, @Body() body: { title: string }) {
-    return this.usersService.createPost(Number(id), body.title);
-  }
-
   @Post('with-post')
   createUserWithPost(@Body() body: CreateUserWithPostDto) {
     return this.usersService.createUserWithPost(body.name, body.title);
+  }
+
+  @Post(':id/post')
+  createPost(@Param('id') id: string, @Body() body: { title: string }) {
+    return this.usersService.createPost(Number(id), body.title);
   }
 
   @Put(':id')
