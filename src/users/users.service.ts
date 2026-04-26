@@ -5,14 +5,24 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll(page: number, pageSize: number) {
-    return this.prisma.user.findMany({
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
+  async findAll(page: number, pageSize: number) {
+    const [list, total] = await Promise.all([
+      this.prisma.user.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      }),
+      this.prisma.user.count(),
+    ]);
+
+    return {
+      list,
+      total,
+      page,
+      pageSize,
+    };
   }
 
   async findOne(id: number) {
