@@ -55,9 +55,40 @@ export class UsersService {
     return user;
   }
 
-  create(name: string) {
+  async create(name: string) {
     return this.prisma.user.create({
       data: { name },
+    });
+  }
+
+  async createPost(userId: number, title: string) {
+    return this.prisma.post.create({
+      data: {
+        userId,
+        title,
+      },
+    });
+  }
+
+  async createUserWithPost(name: string, title: string) {
+    return this.prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          name,
+        },
+      });
+
+      const post = await tx.post.create({
+        data: {
+          userId: user.id,
+          title,
+        },
+      });
+
+      return {
+        user,
+        post,
+      };
     });
   }
 
@@ -73,15 +104,6 @@ export class UsersService {
     await this.findOne(id);
     return this.prisma.user.delete({
       where: { id },
-    });
-  }
-
-  async createPost(userId: number, title: string) {
-    return this.prisma.post.create({
-      data: {
-        userId,
-        title,
-      },
     });
   }
 }

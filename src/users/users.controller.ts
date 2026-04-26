@@ -12,6 +12,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
+import { CreateUserWithPostDto } from './dto/create-user-with-post.dto';
 
 @Controller('users')
 export class UsersController {
@@ -35,6 +36,16 @@ export class UsersController {
     return this.usersService.create(body.name);
   }
 
+  @Post(':id/post')
+  createPost(@Param('id') id: string, @Body() body: { title: string }) {
+    return this.usersService.createPost(Number(id), body.title);
+  }
+
+  @Post('with-post')
+  createUserWithPost(@Body() body: CreateUserWithPostDto) {
+    return this.usersService.createUserWithPost(body.name, body.title);
+  }
+
   @Put(':id')
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(Number(id), body.name);
@@ -43,10 +54,5 @@ export class UsersController {
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
     return this.usersService.remove(Number(id));
-  }
-
-  @Post(':id/post')
-  createPost(@Param('id') id: string, @Body() body: { title: string }) {
-    return this.usersService.createPost(Number(id), body.title);
   }
 }
