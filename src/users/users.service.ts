@@ -6,22 +6,26 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(page: number, pageSize: number, keyword: string) {
+    const where = keyword
+      ? {
+          name: {
+            contains: keyword,
+          },
+        }
+      : {};
+
     const [list, total] = await Promise.all([
       this.prisma.user.findMany({
         skip: (page - 1) * pageSize,
         take: pageSize,
-        where: keyword
-          ? {
-              name: {
-                contains: keyword,
-              },
-            }
-          : {},
+        where,
         orderBy: {
           updatedAt: 'desc',
         },
       }),
-      this.prisma.user.count(),
+      this.prisma.user.count({
+        where,
+      }),
     ]);
 
     return {
