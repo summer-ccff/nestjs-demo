@@ -44,7 +44,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`用户 ID ${id} 不存在`);
     }
-
     return user;
   }
 
@@ -56,7 +55,6 @@ export class UsersService {
 
   async update(id: number, name: string) {
     await this.findOne(id);
-
     return this.prisma.user.update({
       where: { id },
       data: { name },
@@ -65,9 +63,17 @@ export class UsersService {
 
   async remove(id: number) {
     await this.findOne(id);
-
     return this.prisma.user.delete({
       where: { id },
+    });
+  }
+
+  async createPost(userId: number, title: string) {
+    return this.prisma.post.create({
+      data: {
+        userId,
+        title,
+      },
     });
   }
 }

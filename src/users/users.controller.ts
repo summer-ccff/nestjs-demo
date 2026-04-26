@@ -44,4 +44,9 @@ export class UsersController {
   deleteUser(@Param('id') id: string) {
     return this.usersService.remove(Number(id));
   }
+
+  @Post(':id/post')
+  createPost(@Param('id') id: string, @Body() body: { title: string }) {
+    return this.usersService.createPost(Number(id), body.title);
+  }
 }
