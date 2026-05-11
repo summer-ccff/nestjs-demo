@@ -15,8 +15,8 @@ const configModuleOptions = {
 @Module({
   imports: [
     ConfigModule.forRoot(configModuleOptions),
-    UsersModule,
     PrismaModule,
+    UsersModule,
     AuthModule,
   ],
   controllers: [AppController],
